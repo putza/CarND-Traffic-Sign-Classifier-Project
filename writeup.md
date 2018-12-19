@@ -24,12 +24,18 @@ The goals / steps of this project are the following:
 [image1]: ./examples/fig01_example_signs.png "Visualization"
 [image2]: ./examples/fig02_train_hist_class.png "Grayscaling"
 [image3]: ./examples/fig03_train_pipeline.png "Random Noise"
-[image4]: ./examples/fig04_model_comparison.png "Traffic Sign 1"
-[image4a]: ./examples/fig04_model_comparison_aug.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image4]: ./examples/fig04_model_comparison.png
+[image4a]: ./examples/fig04_model_comparison_aug.png
+[image_aug_01]: ./examples/fig01a_example_augmented.png
+[image_aug_02]: ./examples/fig01b_example_augmented.png
+[image_aug_03]: ./examples/fig02_train_hist_class_aug.png
+[image_real_pipeline]: ./examples/fig05_real_gray.png
+[image_real_classification]: ./examples/fig06_real_gray_classification.png
+[image_real_allprob]: ./examples/fig07_real_gray_propability.png
+
+[image_real_pipeline_aug]: ./examples/fig05_real_gray_aug.png
+[image_real_classification_aug]: ./examples/fig06_real_gray_classification_aug.png
+[image_real_allprob_aug]: ./examples/fig07_real_gray_propability_aug.png
 
 ## Rubric Points
 
@@ -91,8 +97,14 @@ The solid dots denote the testing accuray.
 
 **Data Augmentation**
 
-I have not implemented data augmentation yet as it was not necessary to reach the pass criterion
+I have implemented a simple data augmentation algorithm. It uses the OPenCV wrap function. The wrap function is based on a random transformation of three reference points. The image below shows the application of repeated augmentation operations on the original image in the top left.
+![alt text][image_aug_01]
 
+The augmentation applied to five random samples. Top row are original images, bottom row are augmented images.
+![alt text][image_aug_02]
+
+The category histogram of the augmented data is whown below.
+![alt text][image_aug_03]
 
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -100,7 +112,7 @@ I implemented the following neural network for this project:
 * LeNet for RGB and grayscale (function takes the channels as input parameter)
 * SermaNet (RGB and Grayscale version)
 
-  I followed the [published baseline model on this problem](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf)recommended by Udacity.
+  I followed the [published baseline model on this problem](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) recommended by Udacity.
 
 
 SermaNet outperforms LeNet with similar computational speed. I created a fucntion which creates this model and takes the number of channels as parameter. The other hyperparameters are the mean and standard deviation of the random weight initialization.
@@ -124,7 +136,7 @@ SermaNet outperforms LeNet with similar computational speed. I created a fucntio
 |
 | Concat [--,++]        | Input = 400 + 400. Output = 800            |
 |
-| Dropout               | 0.5% |
+| Dropout               | 50% |
 |
 | Fully Connected       | Input = 800. **Output = 43** |
 
@@ -183,7 +195,7 @@ If an iterative approach was chosen:
 
 **With Data Augmentation**
 
-![alt text][image4]
+![alt text][image4a]
 
     LeNet-RGB:	 Final Validation Accuracy 0.9419501122703898, Testing Accuracy 0.9209026126095159
     LeNet-Gray:	 Final Validation Accuracy 0.9265306116231715, Testing Accuracy 0.9125890740211862
@@ -195,11 +207,16 @@ If an iterative approach was chosen:
 #### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
 Here are five German traffic signs that I found on the web:
+The first column is the original image, the second the projection onto a 32x32 grid and the third column shows the imaging pipeline applied.
 
-![alt text][image4] ![alt text][image5] ![alt text][image6]
-![alt text][image7] ![alt text][image8]
+![Real Images][image_real_pipeline]
 
-The first image might be difficult to classify because ...
+Potential difficulties in the images:
+
+* 1,2: Dominating green background
+* 3,4,5: Dominating blue background. Originally I had some issues with image 3 so I created a cropped version.
+* 6: Confusing background
+
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -216,22 +233,39 @@ Here are the results of the prediction:
 
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
 
+**Original Dataset**
+
+![Original Prediction][image_real_classification]
+
+The model was able to correctly guess 5 of the 6 traffic signs, which gives an accuracy of 83%. This compares a  little lower to the accuracy on the test set of 95%
+
+The stop sign was identified incorrectly, with the algorithm predicting the wrong class with 100% accuracy.
+
+**Augmented Dataset**
+
+![Original Prediction][image_real_classification_aug]
+
+The model was able to correctly guess 5 of the 6 traffic signs, which gives an accuracy of 83%. This compares a  little lower to the accuracy on the test set of 97%
+
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+**Original Dataset**
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+The top five predictions of each image are shown in the previous section.
+The propability for each class if shown below on a logaryhmic scale.
 
-| Probability         	|     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| .60         			| Stop sign   									|
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+![Original Prediction][image_real_allprob]
 
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
 
-For the second image ...
+**Augmented Dataset**
+
+The top five predictions of each image are shown in the previous section.
+The propability for each class if shown below on a logaryhmic scale.
+
+![Original Prediction][image_real_allprob]
+
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
