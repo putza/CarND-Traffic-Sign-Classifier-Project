@@ -25,6 +25,7 @@ The goals / steps of this project are the following:
 [image2]: ./examples/fig02_train_hist_class.png "Grayscaling"
 [image3]: ./examples/fig03_train_pipeline.png "Random Noise"
 [image4]: ./examples/fig04_model_comparison.png "Traffic Sign 1"
+[image4a]: ./examples/fig04_model_comparison_aug.png "Traffic Sign 1"
 [image5]: ./examples/placeholder.png "Traffic Sign 2"
 [image6]: ./examples/placeholder.png "Traffic Sign 3"
 [image7]: ./examples/placeholder.png "Traffic Sign 4"
@@ -179,6 +180,15 @@ If an iterative approach was chosen:
     LeNet-Gray:	 Final Validation Accuracy 0.9027210894355427, Testing Accuracy 0.9034045928258888
     SermaNet-RGB:	 Final Validation Accuracy 0.9616780039945156, Testing Accuracy 0.9461599360452412
     SermaNet-Gray:	 Final Validation Accuracy 0.957142858710689, Testing Accuracy 0.9415676965566259
+
+**With Data Augmentation**
+
+![alt text][image4]
+
+    LeNet-RGB:	 Final Validation Accuracy 0.9419501122703898, Testing Accuracy 0.9209026126095159
+    LeNet-Gray:	 Final Validation Accuracy 0.9265306116231715, Testing Accuracy 0.9125890740211862
+    SermaNet-RGB:	 Final Validation Accuracy 0.9739229046027947, Testing Accuracy 0.9541567692847264
+    SermaNet-Gray:	 Final Validation Accuracy 0.96984127086847, Testing Accuracy 0.9469517019846472
 
 ### Test a Model on New Images
 
