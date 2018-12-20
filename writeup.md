@@ -21,9 +21,9 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/fig01_example_signs.png "Visualization"
-[image2]: ./examples/fig02_train_hist_class.png "Grayscaling"
-[image3]: ./examples/fig03_train_pipeline.png "Random Noise"
+[image1]: ./examples/fig01_example_signs.png
+[image2]: ./examples/fig02_train_hist_class.png
+[image3]: ./examples/fig03_train_pipeline_aug.png
 [image4]: ./examples/fig04_model_comparison.png
 [image4a]: ./examples/fig04_model_comparison_aug.png
 [image_aug_01]: ./examples/fig01a_example_augmented.png
@@ -36,6 +36,9 @@ The goals / steps of this project are the following:
 [image_real_pipeline_aug]: ./examples/fig05_real_gray_aug.png
 [image_real_classification_aug]: ./examples/fig06_real_gray_classification_aug.png
 [image_real_allprob_aug]: ./examples/fig07_real_gray_propability_aug.png
+
+[image_featuremap_con01]: ./examples/fig08_real_gray_featuremaps_conv01.png
+[image_featuremap_con02]: ./examples/fig08_real_gray_featuremaps_conv02.png
 
 ## Rubric Points
 
@@ -88,12 +91,9 @@ The pipeline contained these steps in order:
 
    Normalize the image to -0.5 and 0.5
 
-Here is a n overview of the performance of the methods on the unaugmented data:
+The two steps of the training pipeline are demonstrated below:
 
-![alt text][image4]
-The dotted horizontal line denotes the Udacity pass criterium for validation accuracy.
-The solid dots denote the testing accuray.
-
+![Training Pipeline][image3]
 
 **Data Augmentation**
 
@@ -197,16 +197,16 @@ If an iterative approach was chosen:
 
 ![alt text][image4a]
 
-    LeNet-RGB:	 Final Validation Accuracy 0.9419501122703898, Testing Accuracy 0.9209026126095159
-    LeNet-Gray:	 Final Validation Accuracy 0.9265306116231715, Testing Accuracy 0.9125890740211862
-    SermaNet-RGB:	 Final Validation Accuracy 0.9739229046027947, Testing Accuracy 0.9541567692847264
-    SermaNet-Gray:	 Final Validation Accuracy 0.96984127086847, Testing Accuracy 0.9469517019846472
+    LeNet-RGB:	 Final Validation Accuracy 0.9210884374015186, Testing Accuracy 0.9148851945677733
+    LeNet-Gray:	 Final Validation Accuracy 0.9294784569145601, Testing Accuracy 0.9062549491204257
+    SermaNet-RGB:	 Final Validation Accuracy 0.9761904766770447, Testing Accuracy 0.9589073640150582
+    SermaNet-Gray:	 Final Validation Accuracy 0.9666666655854033, Testing Accuracy 0.9474267609612109
 
 ### Test a Model on New Images
 
 #### 1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+Here are six German traffic signs that I found on the web:
 The first column is the original image, the second the projection onto a 32x32 grid and the third column shows the imaging pipeline applied.
 
 ![Real Images][image_real_pipeline]
@@ -220,26 +220,16 @@ Potential difficulties in the images:
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-Here are the results of the prediction:
-
-| Image			        |     Prediction	        					|
-|:---------------------:|:---------------------------------------------:|
-| Stop Sign      		| Stop sign   									|
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
-
-
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
 
 **Original Dataset**
 
+
+
 ![Original Prediction][image_real_classification]
 
-The model was able to correctly guess 5 of the 6 traffic signs, which gives an accuracy of 83%. This compares a  little lower to the accuracy on the test set of 95%
+The model was able to correctly guess 5 of the 6 traffic signs, which gives an accuracy of 83%. This compares a  little lower to the accuracy on the test set of 93%
 
-The stop sign was identified incorrectly, with the algorithm predicting the wrong class with 100% accuracy.
+The stop sign was identified incorrectly, with the algorithm predicting the wrong class with 99% accuracy.
 
 **Augmented Dataset**
 
@@ -249,25 +239,38 @@ The model was able to correctly guess 5 of the 6 traffic signs, which gives an a
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
+For the orogonal as well as the augmented data, the algorithm is almost 100% certain in all cases, even the misclassified ones. Only the logscale shows some differences.
+
 **Original Dataset**
 
 The top five predictions of each image are shown in the previous section.
-The propability for each class if shown below on a logaryhmic scale.
+The propability for each class if shown below on a logarythmic scale.
 
 ![Original Prediction][image_real_allprob]
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The only dataset where other signs accur with a propabiliy of higher than
+10E-12 is the misclassified sign in row three.
 
 **Augmented Dataset**
 
 The top five predictions of each image are shown in the previous section.
-The propability for each class if shown below on a logaryhmic scale.
+The propability for each class if shown below on a logarythmic scale.
 
 ![Original Prediction][image_real_allprob]
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The only dataset where other signs accur with a propabiliy of higher than
+10E-12 is the misclassified sign in row three.
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
 
+The image below shows the output of the first convolution layer.
+![Convilution 1][image_featuremap_con01]
+The detected features seem to be:
+* Feature Map 0,2,3: White background color within the sign
+* Feature Map 1,4: The white rim around the sign
+* Feature Map 5: The 70 letters in the sign
 
+The image below shouws the 16 feature maps of layer two.
+![Convolution 2][image_featuremap_con02]
+* Not sure what  we see here.
