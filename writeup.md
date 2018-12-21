@@ -109,13 +109,14 @@ The category histogram of the augmented data is whown below.
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
 I implemented the following neural network for this project:
+
 * LeNet for RGB and grayscale (function takes the channels as input parameter)
 * SermaNet (RGB and Grayscale version)
 
   I followed the [published baseline model on this problem](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) recommended by Udacity.
 
 
-SermaNet outperforms LeNet with similar computational speed. I created a fucntion which creates this model and takes the number of channels as parameter. The other hyperparameters are the mean and standard deviation of the random weight initialization.
+SermaNet outperforms LeNet with similar computational speed. I created a function which creates this model and takes the number of channels as parameter. The other hyperparameters are the mean and standard deviation of the random weight initialization.
 
 | Layer         		|     Description	        					|
 |:---------------------|:---------------------------------------------:|
@@ -150,7 +151,7 @@ To train the model I used the dataset provided by Udacity. This dataset is alrea
 * Validation data
 * Testing data
 
-I assumed that the va;idation data was chosen on purpose, so I did not use the scikit-learn functions to split the datasets further. Specifically if using an augmented dataset, I augmented only the training dataset.
+I assumed that the validation data was chosen on purpose, so I did not use the scikit-learn functions to split the datasets further. Specifically if using an augmented dataset, I augmented only the training dataset.
 
 **Optimizer**
 
@@ -163,7 +164,7 @@ I used the *Adam* optimizer with a learning rate of 0.001. This seemed to work o
 
 **Hyperparameters**
 
-I provided an interface in the model, but did not use it. Used the same values as in the UDacity lectures.
+I provided an interface in the model, but did not use it. Used the same values as in the Udacity lectures.
 
 * mean: 0.0
 * std: 0.1
@@ -174,15 +175,17 @@ I provided an interface in the model, but did not use it. Used the same values a
 
 
 If an iterative approach was chosen:
+
 * I first tried LeNet for grascale. THis worked well on digits, so it should do well on traffic signs. It did well, but did not reach the required accuracy.
+
     * Decision: different architecture or data augmentation
 
-      I chose a going to a different architecture based on the provided reference. I was sure at this point that data augmentation will work as some of the traffic sigs are extremely underrepresented in the traing set. However I was curious, if a new network can get me over the desired accuracy value of 0.93.
-* Next I tried to add the colour information into the Lenet network.
+      I chose a going to a different architecture based on the provided reference. I was sure at this point that data augmentation will work as some of the traffic signs are extremely underrepresented in the training set. However I was curious, if a new network can get me over the desired accuracy value of 0.93.
+* Next I tried to add the colour information into the LeNet network.
 
   This gave me perhaps a little more, but still not enough to get me over the threshold. On some runs it actually behaves worse.
 * Next I used the architecture recommended (nicknamed SermaNet). The grayscale version got me over the threshold after about 100 epochs.
-* Out of curisity I also tried the color version. Behaves about the same.
+* Out of curiosity I also tried the color version. Behaves about the same.
 
 **No Data Augmentation**
 
@@ -244,22 +247,25 @@ For the orogonal as well as the augmented data, the algorithm is almost 100% cer
 **Original Dataset**
 
 The top five predictions of each image are shown in the previous section.
-The propability for each class if shown below on a logarythmic scale.
+The propability for each class if shown below on a logarithmic scale.
 
 ![Original Prediction][image_real_allprob]
 
-The only dataset where other signs accur with a propabiliy of higher than
+The only dataset where other signs occur with a propability of higher than
 10E-12 is the misclassified sign in row three.
+
 
 **Augmented Dataset**
 
 The top five predictions of each image are shown in the previous section.
-The propability for each class if shown below on a logarythmic scale.
+The propability for each class if shown below on a logarithmic scale.
 
 ![Original Prediction][image_real_allprob]
 
-The only dataset where other signs accur with a propabiliy of higher than
+The only dataset where other signs occur with a propability of higher than
 10E-12 is the misclassified sign in row three.
+
+Image augmentation did not solve this issue. A less naive image augmentation pipeline should solve this problem.
 
 ### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
 #### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
@@ -267,10 +273,23 @@ The only dataset where other signs accur with a propabiliy of higher than
 The image below shows the output of the first convolution layer.
 ![Convilution 1][image_featuremap_con01]
 The detected features seem to be:
+
 * Feature Map 0,2,3: White background color within the sign
 * Feature Map 1,4: The white rim around the sign
 * Feature Map 5: The 70 letters in the sign
 
-The image below shouws the 16 feature maps of layer two.
+The image below shows the 16 feature maps of layer two.
 ![Convolution 2][image_featuremap_con02]
 * Not sure what  we see here.
+
+
+# Resources:
+
+Most parts of this project is based on material covered during the Udacity lectures and quiz code examples.
+
+The modification of the LeNet CNN is taken from
+
+* a [research article](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf)
+* [a test example on github](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+
+The inspiration for the augmentation progress bar is taken from [here](https://github.com/jeremy-shannon/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
